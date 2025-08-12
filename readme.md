@@ -55,27 +55,19 @@ CMAEN introduces a revolutionary parallel pathway architecture that combines:
    - **Fusion Classification**: Global feature-based prediction
    - **Adaptive Ensemble**: Learnable attention-weighted final prediction
 
-```mermaid
-graph TB
-    A[Enhanced Input Images<br/>224x224 RGB] --> B[E-CNN Pathway]
-    A --> C[EfficientNetV2S Pathway]
-    
-    B --> D[Multi-Scale Attention]
-    B --> E[Emotion-Specific Attention]
-    C --> F[Foundation Features]
-    
-    D --> G[Cross-Modal Attention]
-    E --> G
-    F --> G
-    
-    G --> H[Feature Pyramid Network]
-    G --> I[Fusion Classification]
-    H --> J[Emotion-Specific Classification]
-    
-    I --> K[Adaptive Ensemble]
-    J --> K
-    K --> L[Final Prediction<br/>7 Emotions]
-```
+### Pipeline Overview
+![CMAEN Main Pipeline]()
+*Complete CMAEN processing pipeline from data enhancement to final emotion prediction*
+
+### Architecture Stages
+
+#### Stage 1: Parallel Feature Extraction
+![Stage 1 Architecture]()
+*Parallel processing pathways: E-CNN with emotion-specific attention and EfficientNetV2S with foundation features*
+
+#### Stage 2: Cross-Modal Attention & Fusion
+![Stage 2 Architecture]()
+*Cross-modal attention mechanism enabling dynamic information exchange and multi-pathway classification*
 
 ## 🔧 Installation & Setup
 
