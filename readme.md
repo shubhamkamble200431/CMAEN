@@ -1,251 +1,262 @@
-# Enhanced Emotion Recognition System
+# CMAEN: Cross-Modal Attention Emotion Network
 
-A state-of-the-art emotion recognition system built with PyTorch, featuring advanced attention mechanisms, hybrid CNN-EfficientNet architecture, and comprehensive data preprocessing pipelines including DDColor and SwinIR.
+[![Python](https://img.shields.io/badge/Python-3.8%2B-blue.svg)](https://www.python.org/downloads/)
+[![PyTorch](https://img.shields.io/badge/PyTorch-2.0%2B-orange.svg)](https://pytorch.org/)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Paper](https://img.shields.io/badge/Paper-ICVGIP'25-red.svg)](https://doi.org/10.1145/nnnnnnn.nnnnnnn)
 
-## 🚀 Features
+A state-of-the-art facial emotion recognition system that achieves **71.98% accuracy** on FER2013 dataset through innovative hybrid architecture, advanced attention mechanisms, and comprehensive data preprocessing pipelines.
 
-- **Advanced Architecture**: Hybrid CNN-EfficientNet with multi-scale attention, emotion-specific attention, and cross-modal attention
-- **Data Enhancement**: Borderline SMOTE for class balancing and comprehensive data augmentation
-- **Image Preprocessing**: Integration with DDColor for colorization and SwinIR for super-resolution
-- **Comprehensive Training**: Advanced loss functions, learning rate scheduling, and early stopping
-- **Real-time Inference**: Support for single image, batch, and real-time webcam prediction
-- **Extensive Evaluation**: Confusion matrices, ROC curves, PR curves, and t-SNE visualizations
-- **Modular Design**: Clean, maintainable code structure with separate modules
+## 🎯 Key Features
 
-## 🎯 Performance
+- **Novel Hybrid Architecture**: Custom Emotion-CNN (E-CNN) + EfficientNetV2S with cross-modal attention
+- **Advanced Data Enhancement**: Super-resolution (SwinIR) + Colorization (DDColor) + Balanced sampling (BorderlineSMOTE)
+- **Sophisticated Attention Mechanisms**: Multi-scale, emotion-specific, and cross-modal attention
+- **Comprehensive Preprocessing**: Face enhancement, colorization, and class balancing
+- **Real-time Inference**: Support for single images, batch processing, and webcam prediction
+- **Extensive Evaluation**: Detailed performance metrics, visualizations, and ablation studies
 
-- **7 Emotion Classes**: Angry, Disgust, Fear, Happy, Neutral, Sad, Surprise
-- **State-of-the-art Accuracy**: Enhanced hybrid architecture with attention mechanisms
-- **Real-time Processing**: Optimized for both accuracy and speed
-- **Robust Generalization**: Advanced regularization and data augmentation techniques
+## 📊 Performance
 
-## 📁 Project Structure
+| Model Configuration | Accuracy | F1-Score | Key Features |
+|---------------------|----------|----------|--------------|
+| **CMAEN (Enhanced)** | **71.98%** | **0.72** | Full pipeline with all enhancements |
+| CMAEN (No Enhancement) | 68.17% | 0.68 | Baseline without preprocessing |
+| **Improvement** | **+3.81%** | **+0.04** | Enhancement pipeline benefit |
 
+### Emotion-wise Performance
+| Emotion | Precision | Recall | F1-Score | AUC-ROC |
+|---------|-----------|---------|----------|---------|
+| Happy | 0.86 | 0.89 | **0.88** | 0.968 |
+| Surprise | 0.82 | 0.85 | **0.83** | 0.964 |
+| Disgust | 0.93 | 0.68 | 0.79 | 0.944 |
+| Neutral | 0.65 | 0.72 | 0.68 | 0.901 |
+| Angry | 0.64 | 0.64 | 0.64 | 0.896 |
+| Sad | 0.60 | 0.60 | 0.60 | 0.868 |
+| Fear | 0.66 | 0.54 | 0.59 | 0.847 |
+
+## 🏗️ Architecture Overview
+
+### Cross-Modal Attention Emotion Network (CMAEN)
+
+CMAEN introduces a revolutionary parallel pathway architecture that combines:
+
+1. **Stage 1: Parallel Feature Extraction**
+   - **E-CNN Pathway**: Custom emotion-focused CNN with residual blocks and multi-scale attention
+   - **EfficientNetV2S Pathway**: Robust foundation model with domain adaptation
+
+2. **Stage 2: Cross-Modal Attention & Fusion**
+   - **Dynamic Information Exchange**: Query-key-value attention between pathways
+   - **Learnable Gate Integration**: Adaptive contribution control
+   - **Feature Pyramid Network**: Multi-scale feature processing
+
+3. **Stage 3: Multiple Classification Strategy**
+   - **Emotion-Specific Heads**: Dedicated classifiers for each emotion
+   - **Fusion Classification**: Global feature-based prediction
+   - **Adaptive Ensemble**: Learnable attention-weighted final prediction
+
+```mermaid
+graph TB
+    A[Enhanced Input Images<br/>224x224 RGB] --> B[E-CNN Pathway]
+    A --> C[EfficientNetV2S Pathway]
+    
+    B --> D[Multi-Scale Attention]
+    B --> E[Emotion-Specific Attention]
+    C --> F[Foundation Features]
+    
+    D --> G[Cross-Modal Attention]
+    E --> G
+    F --> G
+    
+    G --> H[Feature Pyramid Network]
+    G --> I[Fusion Classification]
+    H --> J[Emotion-Specific Classification]
+    
+    I --> K[Adaptive Ensemble]
+    J --> K
+    K --> L[Final Prediction<br/>7 Emotions]
 ```
-emotion_recognition/
-├── config.py              # Configuration and hyperparameters
-├── dataset.py             # Dataset loading and data transformations
-├── models.py              # Neural network architectures and attention mechanisms
-├── utils.py               # Utility functions, loss functions, and schedulers
-├── data_balancer.py       # Borderline SMOTE and data balancing
-├── train.py               # Training logic and procedures
-├── test.py                # Testing, evaluation, and visualization
-├── inference.py           # Inference utilities and real-time prediction
-├── main.py                # Main entry point and CLI interface
-├── requirements.txt       # Python dependencies
-├── README.md              # This file
-├── repositories/          # External repositories (DDColor, SwinIR)
-│   ├── DDColor/           # DDColor repository (git submodule)
-│   └── SwinIR/            # SwinIR repository (git submodule)
-├── outputs/               # Generated outputs
-├── saved_models/          # Trained model checkpoints
-├── results/               # Training and evaluation results
-└── plots/                 # Generated plots and visualizations
-```
 
-## 🛠️ Installation
+## 🔧 Installation & Setup
 
-### 1. Clone the Repository
+### Prerequisites
+- Python 3.8+
+- CUDA-capable GPU (recommended: 16GB+ VRAM)
+- 20GB+ free disk space
 
+### 1. Clone Repository
 ```bash
-git clone https://github.com/shubhamkamble200431/CMAEN
-cd emotion_recognition
+git clone https://github.com/shubhamkamble200431/CMAEN.git
+cd CMAEN
 ```
 
-### 2. Set up Python Environment
-
+### 2. Create Virtual Environment
 ```bash
-# Create virtual environment
-python -m venv venv
+python -m venv cmaen_env
 
-# Activate virtual environment
-# On Windows:
-venv\Scripts\activate
-# On macOS/Linux:
-source venv/bin/activate
+# Windows
+cmaen_env\Scripts\activate
+
+# Linux/macOS  
+source cmaen_env/bin/activate
 ```
 
 ### 3. Install Dependencies
-
 ```bash
 pip install -r requirements.txt
 ```
 
-### 4. Set up External Repositories (DDColor & SwinIR)
+### 4. Setup External Repositories
 
-The system supports advanced image preprocessing using DDColor for colorization and SwinIR for super-resolution. These are optional but recommended for best performance.
-
-#### DDColor Setup (Image Colorization)
-
+#### DDColor (Image Colorization)
 ```bash
-# Create repositories directory
 mkdir -p repositories
 cd repositories
 
-# Clone DDColor repository
 git clone https://github.com/piddnad/DDColor.git
 cd DDColor
-
-# Install DDColor dependencies
 pip install timm basicsr facexlib gfpgan
 
-# Download pre-trained models (follow DDColor documentation)
-# Models should be placed in DDColor/pretrain_models/
+# Download pretrained models (follow DDColor documentation)
+mkdir -p pretrain_models
+# Place net_g_200000.pth in pretrain_models/
+cd ../..
 ```
 
-#### SwinIR Setup (Image Super-Resolution)
-
+#### SwinIR (Super-Resolution)
 ```bash
-# From repositories directory
+cd repositories
 git clone https://github.com/JingyunLiang/SwinIR.git
 cd SwinIR
-
-# Install SwinIR dependencies  
 pip install timm basicsr
 
-# Download pre-trained models (follow SwinIR documentation)
-# Models should be placed in SwinIR/model_zoo/
+# Download pretrained models (follow SwinIR documentation)  
+mkdir -p model_zoo
+# Place swinir_real_sr_x4_large.pth in model_zoo/
+cd ../..
 ```
 
-### 5. Configure Paths
-
-Edit `config.py` to set your dataset paths:
-
+### 5. Configure Dataset Paths
+Edit `config.py` with your dataset paths:
 ```python
-# Update these paths in config.py
-ORIGINAL_TRAIN_DIR = "/path/to/your/original/train/dataset"
-ORIGINAL_TEST_DIR = "/path/to/your/original/test/dataset"
-AUGMENTED_TRAIN_DIR = "/path/to/your/augmented/train/dataset"
-AUGMENTED_TEST_DIR = "/path/to/your/augmented/test/dataset"
+# Dataset Paths
+ORIGINAL_TRAIN_DIR = "/path/to/your/fer2013/train"
+ORIGINAL_TEST_DIR = "/path/to/your/fer2013/test"
+AUGMENTED_TRAIN_DIR = "/path/to/enhanced/train"  
+AUGMENTED_TEST_DIR = "/path/to/enhanced/test"
 ```
 
-## 📊 Dataset Structure
-
-Your dataset should be organized as follows:
+## 📁 Project Structure
 
 ```
-dataset/
-├── train/
-│   ├── angry/
-│   ├── disgust/
-│   ├── fear/
-│   ├── happy/
-│   ├── neutral/
-│   ├── sad/
-│   └── surprise/
-└── test/
-    ├── angry/
-    ├── disgust/
-    ├── fear/
-    ├── happy/
-    ├── neutral/
-    ├── sad/
-    └── surprise/
+CMAEN/
+├── 📁 config.py              # Configuration and hyperparameters
+├── 📁 dataset.py             # Dataset loading and transformations
+├── 📁 models.py              # CMAEN architecture and attention mechanisms
+├── 📁 utils.py               # Utility functions and loss functions
+├── 📁 data_balancer.py       # BorderlineSMOTE implementation
+├── 📁 train.py               # Training procedures and optimization
+├── 📁 test.py                # Testing, evaluation, and visualization
+├── 📁 inference.py           # Real-time inference and prediction
+├── 📁 main.py                # Main entry point and CLI interface
+├── 📁 requirements.txt       # Python dependencies
+├── 📁 repositories/          # External repositories
+│   ├── 📁 DDColor/           # Image colorization
+│   └── 📁 SwinIR/            # Super-resolution
+├── 📁 outputs/               # Generated outputs
+├── 📁 saved_models/          # Trained model checkpoints
+├── 📁 results/               # Training and evaluation results
+└── 📁 plots/                 # Visualizations and plots
 ```
 
-## 🎯 Usage
+## 🚀 Quick Start
 
 ### Data Preprocessing Pipeline
 
-#### 1. Image Enhancement with DDColor (Optional)
+#### 1. Super-Resolution Enhancement
+```bash
+cd repositories/SwinIR
+python main_test_swinir.py \
+    --task real_sr \
+    --scale 4 \
+    --model_path model_zoo/swinir_real_sr_x4_large.pth \
+    --folder_lq /path/to/fer2013/48x48 \
+    --folder_gt /path/to/enhanced/192x192
+```
 
-If you have grayscale images and want to colorize them:
-
+#### 2. Image Colorization  
 ```bash
 cd repositories/DDColor
-
-# Run DDColor on your dataset
 python inference.py \
     --model_path pretrain_models/net_g_200000.pth \
     --input_path /path/to/grayscale/images \
     --output_path /path/to/colorized/images
 ```
 
-#### 2. Image Super-Resolution with SwinIR (Optional)
-
-To enhance image resolution:
-
-```bash
-cd repositories/SwinIR
-
-# Run SwinIR for image super-resolution
-python main_test_swinir.py \
-    --task real_sr \
-    --scale 4 \
-    --model_path model_zoo/swinir_real_sr_x4_large.pth \
-    --folder_lq /path/to/low/resolution/images \
-    --folder_gt /path/to/output/high/resolution/images
-```
-
-#### 3. Data Balancing with Borderline SMOTE
-
-Balance your dataset using advanced SMOTE techniques:
-
+#### 3. Dataset Balancing
 ```bash
 python main.py balance \
-    --input-dir /path/to/original/dataset \
+    --input-dir /path/to/enhanced/dataset \
     --output-dir /path/to/balanced/dataset
 ```
 
 ### Training
 
-Train the enhanced emotion recognition model:
-
+#### Basic Training
 ```bash
-# Basic training
 python main.py train
-
-# Training with custom settings
-python main.py train --verbose --seed 42
 ```
 
-Training features:
-- **Advanced Loss Functions**: Focal loss, label smoothing, and multiple auxiliary losses
-- **Attention Mechanisms**: Multi-scale, emotion-specific, and cross-modal attention
-- **Regularization**: Dropout, weight decay, gradient clipping
-- **Scheduling**: Cosine annealing with warm restarts
-- **Early Stopping**: Automatic stopping with patience
-
-### Testing and Evaluation
-
-Comprehensive model evaluation:
-
+#### Advanced Training Configuration
 ```bash
-# Full evaluation with visualizations
-python main.py test
+python main.py train \
+    --epochs 150 \
+    --batch-size 64 \
+    --learning-rate 1e-4 \
+    --verbose \
+    --seed 42
+```
 
-# Quick evaluation
-python main.py evaluate
+#### Training Features:
+- **Multi-Loss Framework**: Cross-entropy + Focal loss + Label smoothing + Emotion-specific loss
+- **Advanced Optimization**: AdamW with weight decay and gradient clipping
+- **Smart Scheduling**: Cosine annealing with warm restarts
+- **Early Stopping**: Patience-based stopping with best model saving
+- **Mixed Precision**: Automatic mixed precision training for efficiency
+
+### Evaluation & Testing
+
+#### Comprehensive Evaluation
+```bash
+python main.py test
 ```
 
 Generated outputs:
-- **Confusion Matrix**: Detailed class-wise performance
-- **ROC Curves**: Receiver Operating Characteristic curves for all classes
-- **PR Curves**: Precision-Recall curves with Average Precision scores
-- **Training Curves**: Loss and accuracy progression
-- **t-SNE Visualization**: Feature space analysis comparing original vs augmented data
-- **Classification Report**: Detailed metrics per class
+- 📊 **Confusion Matrix**: Detailed class-wise analysis
+- 📈 **ROC Curves**: Multi-class ROC analysis with AUC scores
+- 📉 **PR Curves**: Precision-Recall curves with Average Precision
+- 📋 **Classification Report**: Per-class precision, recall, F1-score
+- 🎨 **Training Curves**: Loss and accuracy progression plots
+- 🔍 **t-SNE Visualization**: Feature space analysis
 
 ### Inference
 
 #### Single Image Prediction
-
 ```bash
 python main.py inference --image /path/to/image.jpg
 ```
 
 #### Batch Prediction
-
 ```bash
 python main.py inference \
     --directory /path/to/images \
-    --output results.json
+    --output predictions.json \
+    --batch-size 32
 ```
 
-#### Real-time Webcam Prediction
-
+#### Real-time Webcam
 ```bash
-# Real-time emotion recognition from webcam
+# Basic webcam inference
 python main.py inference --real-time
 
 # Save annotated video
@@ -255,7 +266,7 @@ python main.py inference --real-time --save-video output.avi
 python main.py inference --real-time --camera-index 1
 ```
 
-### Python API Usage
+## 💻 Python API Usage
 
 ```python
 from inference import EmotionPredictor
@@ -268,144 +279,276 @@ result = predictor.predict_single('image.jpg')
 print(f"Emotion: {result['predicted_emotion']}")
 print(f"Confidence: {result['confidence']:.3f}")
 
-# Batch prediction
+# Get top-k predictions
+top_3 = predictor.get_top_k_predictions('image.jpg', k=3)
+for i, (emotion, confidence) in enumerate(top_3):
+    print(f"{i+1}. {emotion}: {confidence:.3f}")
+
+# Batch processing
 image_list = ['img1.jpg', 'img2.jpg', 'img3.jpg']
 results = predictor.predict_batch(image_list)
 
-# Top-k predictions
-top_predictions = predictor.get_top_k_predictions('image.jpg', k=3)
+# Real-time webcam processing
+predictor.real_time_webcam(
+    camera_index=0,
+    save_video=True,
+    output_path='webcam_emotions.avi'
+)
 ```
 
-## 🏗️ Architecture Details
+## 🔬 Technical Details
 
-### Enhanced Hybrid Model
+### Enhanced Hybrid Architecture
 
-The system uses a novel hybrid architecture combining:
+#### E-CNN (Emotion-CNN) Features:
+- **Residual Architecture**: 4 residual blocks with skip connections
+- **Multi-Scale Attention**: Parallel attention at scales {1, 2, 4}
+- **Emotion-Specific Attention**: Dedicated heads for 7 emotions
+- **Advanced Regularization**: Dropout, batch normalization, gradient clipping
 
-1. **Enhanced CNN Backbone**
-   - Residual blocks with improved regularization
-   - Multi-scale attention mechanisms
-   - Emotion-specific attention heads
+#### EfficientNetV2S Integration:
+- **Foundation Model**: Pre-trained EfficientNetV2S backbone
+- **Domain Adaptation**: Modified input/output layers for emotion recognition
+- **Feature Enhancement**: Custom attention modules for emotional features
 
-2. **EfficientNet Backbone**
-   - Pre-trained EfficientNet-V2-S
-   - Adapted for emotion recognition
-   - Multi-scale feature extraction
+#### Cross-Modal Attention Mechanism:
+```python
+# Query-Key-Value attention computation
+Q = Conv1x1(E_CNN_features)        # Queries from E-CNN
+K = Conv1x1(EfficientNet_features) # Keys from EfficientNet  
+V = Conv1x1(EfficientNet_features) # Values from EfficientNet
 
-3. **Advanced Attention Mechanisms**
-   - **Multi-Scale Attention**: Captures features at different scales
-   - **Emotion-Specific Attention**: Dedicated attention for each emotion class
-   - **Cross-Modal Attention**: Fuses CNN and EfficientNet features
+# Attention weights and feature fusion
+Attention_weights = Softmax(Q @ K^T / sqrt(d_k))
+Cross_modal_features = Attention_weights @ V
 
-4. **Feature Pyramid Network**
-   - Multi-scale feature fusion
-   - Enhanced feature representation
+# Learnable gate integration
+Output = γ * Cross_modal_features + E_CNN_features
+```
 
-### Training Enhancements
+### Data Enhancement Pipeline
 
-- **Multiple Loss Functions**: Cross-entropy, focal loss, label smoothing
-- **Advanced Optimization**: AdamW with weight decay
-- **Learning Rate Scheduling**: Cosine annealing with warm restarts
-- **Regularization**: Dropout, gradient clipping, data augmentation
-- **Class Balancing**: Borderline SMOTE for imbalanced datasets
+#### 1. Face Super-Resolution (SwinIR)
+- **Input**: 48×48 grayscale FER2013 images
+- **Output**: 192×192 high-resolution images
+- **Architecture**: Swin Transformer with residual connections
+- **Scaling Factor**: 4× enhancement
 
-## 📈 Performance Metrics
+#### 2. Facial Colorization (DDColor)
+- **Method**: Transformer-based multi-scale decoding
+- **Features**: Learnable color queries with cross-attention
+- **Output**: Natural, emotion-preserving colorization
 
-The system provides comprehensive evaluation metrics:
+#### 3. Class Balancing (BorderlineSMOTE)
+- **Target**: Balanced 7-class distribution
+- **Method**: Boundary-focused synthetic sample generation
+- **Features**: Emotion-preserving augmentation constraints
 
-- **Accuracy**: Overall and per-class accuracy
-- **Precision, Recall, F1-Score**: Detailed per-class metrics
-- **Confusion Matrix**: Class-wise confusion analysis
-- **ROC-AUC**: Area under ROC curves
-- **Average Precision**: PR curve analysis
-- **Training Curves**: Loss and accuracy progression
-
-## 🔧 Configuration
-
-Key configuration options in `config.py`:
+### Training Configuration
 
 ```python
-# Model Configuration
-INPUT_SIZE = 224              # Input image size
-INPUT_CHANNELS = 3            # RGB channels
-NUM_CLASSES = 7              # Number of emotion classes
-MODEL_TYPE = 'enhanced_hybrid' # Model architecture
+# Model Architecture
+MODEL_TYPE = 'cmaen_hybrid'
+INPUT_SIZE = 224
+NUM_CLASSES = 7
+DROPOUT_RATE = 0.5
 
-# Training Configuration
-LEARNING_RATE = 0.0001       # Initial learning rate
-BATCH_SIZE = 64              # Training batch size
-EPOCHS = 150                 # Maximum epochs
-DROPOUT_RATE = 0.5           # Dropout probability
-WEIGHT_DECAY = 1e-3          # L2 regularization
-PATIENCE = 15                # Early stopping patience
-LABEL_SMOOTHING = 0.1        # Label smoothing factor
+# Training Hyperparameters
+LEARNING_RATE = 1e-4
+BATCH_SIZE = 64
+EPOCHS = 150
+WEIGHT_DECAY = 1e-3
+PATIENCE = 15
 
-# Data Augmentation
-# Comprehensive augmentation pipeline with emotion-preserving transforms
+# Loss Configuration
+LABEL_SMOOTHING = 0.1
+FOCAL_LOSS_ALPHA = 1.0
+FOCAL_LOSS_GAMMA = 2.0
+
+# Scheduler Settings
+SCHEDULER_T_0 = 30        # First cycle epochs
+SCHEDULER_T_MULT = 2.0    # Cycle multiplier
+SCHEDULER_ETA_MIN = 1e-6  # Minimum learning rate
 ```
 
-## 🚀 Advanced Features
+## 📈 Experimental Results
 
-### Data Preprocessing Pipeline
+### Comparison with State-of-the-Art
 
-1. **Image Colorization**: DDColor integration for grayscale-to-color conversion
-2. **Super-Resolution**: SwinIR integration for image quality enhancement
-3. **Data Balancing**: Borderline SMOTE for handling class imbalance
-4. **Advanced Augmentation**: Emotion-preserving augmentation techniques
+| Method | Year | Accuracy (%) | Notes |
+|--------|------|-------------|-------|
+| **Data-Centric Reclassified** | 2023 | **86.7** | Manual data cleaning |
+| DCNN Ensemble | 2022 | 76.7 | Ensemble approach |
+| VGGNet SOTA | 2021 | 73.3 | Optimized VGG |
+| EfficientNet-XGBoost | 2024 | 72.5 | Hybrid ML approach |
+| **CMAEN (Ours - Enhanced)** | 2025 | **71.98** | **Novel hybrid architecture** |
+| AA-DCN | 2024 | 70.1 | Attention-based CNN |
+| CMAEN (No Enhancement) | 2025 | 68.17 | Baseline comparison |
 
-### Real-time Processing
+### Ablation Studies
 
-- **Webcam Integration**: Real-time emotion recognition from camera feed
-- **Video Processing**: Batch processing of video files
-- **Performance Optimization**: Efficient inference pipeline
+| Component | Accuracy | Δ | Contribution |
+|-----------|----------|---|-------------|
+| **Full CMAEN** | **71.98%** | - | Complete system |
+| w/o Cross-Modal Attention | 70.34% | -1.64% | Attention importance |
+| w/o Emotion-Specific Heads | 69.87% | -2.11% | Specialized processing |
+| w/o Data Enhancement | 68.17% | -3.81% | Preprocessing impact |
+| w/o Multi-Scale Attention | 67.93% | -4.05% | Scale significance |
 
-### Visualization and Analysis
+### Training Efficiency
 
-- **Training Monitoring**: Real-time training progress visualization
-- **Feature Analysis**: t-SNE and PCA visualization of learned features
-- **Performance Analysis**: Comprehensive evaluation metrics and plots
+| Metric | Value | Hardware |
+|--------|--------|----------|
+| **Training Time** | 9.4 hours | NVIDIA Quadro P5000 |
+| **GPU Memory** | ~14GB | 16GB VRAM |
+| **Model Size** | 47.3MB | Compressed |
+| **Inference Speed** | 23ms/image | Single image |
+| **Batch Throughput** | 2.8s/batch | 64 images |
+
+## 🎨 Visualization Examples
+
+### Model Predictions
+![Prediction Examples](docs/images/predictions_sample.png)
+*Sample predictions showing confidence scores across different emotions*
+
+### Training Progress
+![Training Curves](docs/images/training_curves.png)
+*Training and validation curves showing convergence*
+
+### Attention Visualization
+![Attention Maps](docs/images/attention_maps.png)
+*Cross-modal attention maps highlighting important facial regions*
+
+## 🔄 Dataset Requirements
+
+### FER2013 Dataset Structure
+```
+dataset/
+├── train/
+│   ├── angry/           # 4,953 samples → 7,000 (balanced)
+│   ├── disgust/         # 547 samples → 7,000 (balanced)  
+│   ├── fear/            # 5,121 samples → 7,000 (balanced)
+│   ├── happy/           # 8,989 samples → 7,000 (balanced)
+│   ├── neutral/         # 6,198 samples → 7,000 (balanced)
+│   ├── sad/             # 6,077 samples → 7,000 (balanced)
+│   └── surprise/        # 4,002 samples → 7,000 (balanced)
+└── test/
+    ├── angry/           # 958 samples
+    ├── disgust/         # 111 samples
+    ├── fear/            # 1,024 samples  
+    ├── happy/           # 1,774 samples
+    ├── neutral/         # 1,233 samples
+    ├── sad/             # 1,247 samples
+    └── surprise/        # 831 samples
+```
+
+### Data Enhancement Effects
+- **Original**: 48×48 grayscale, severely imbalanced
+- **Enhanced**: 192×192 RGB, class-balanced with 49,000 training samples
+- **Augmented**: Emotion-preserving transformations during training
 
 ## 🤝 Contributing
 
+We welcome contributions! Here's how you can help:
+
+### Areas for Contribution
+1. **Architecture Improvements**: Novel attention mechanisms, better fusion strategies
+2. **Data Enhancement**: New preprocessing techniques, better augmentation methods  
+3. **Optimization**: Efficiency improvements, mobile deployment
+4. **Evaluation**: New metrics, visualization techniques, ablation studies
+5. **Documentation**: Tutorials, examples, code documentation
+
+### Development Setup
+```bash
+# Clone for development
+git clone https://github.com/shubhamkamble200431/CMAEN.git
+cd CMAEN
+
+# Install in development mode
+pip install -e .
+
+# Install development dependencies
+pip install -r requirements-dev.txt
+
+# Run tests
+python -m pytest tests/
+
+# Code formatting
+black .
+isort .
+```
+
+### Pull Request Process
 1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+2. Create feature branch (`git checkout -b feature/amazing-feature`)
+3. Make your changes with tests
+4. Ensure all tests pass
+5. Update documentation as needed
+6. Commit changes (`git commit -m 'Add amazing feature'`)
+7. Push to branch (`git push origin feature/amazing-feature`)
+8. Open a Pull Request
+
+## 📝 Citation
+
+If you use CMAEN in your research, please cite our paper:
+
+```bibtex
+@inproceedings{kamble2025cmaen,
+  title={CMAEN: Cross-Modal Attention Emotion Network for Enhanced Facial Expression Recognition},
+  author={Kamble, Shubham and others},
+  booktitle={Proceedings of 16th Indian Conference on Computer Vision, Graphics and Image Processing},
+  pages={1--9},
+  year={2025},
+  publisher={ACM},
+  address={Mandi, India},
+  doi={10.1145/nnnnnnn.nnnnnnn}
+}
+```
+
+## 🙏 Acknowledgments
+
+- **DDColor Team**: [piddnad/DDColor](https://github.com/piddnad/DDColor) for excellent colorization framework
+- **SwinIR Team**: [JingyunLiang/SwinIR](https://github.com/JingyunLiang/SwinIR) for super-resolution capabilities  
+- **EfficientNet**: Google Research for the EfficientNet architecture family
+- **FER2013 Dataset**: Original dataset creators and maintainers
+- **PyTorch Team**: For the deep learning framework
+- **Research Community**: All researchers advancing facial emotion recognition
+
+## 📞 Support & Contact
+
+### Getting Help
+- **Issues**: [GitHub Issues](https://github.com/shubhamkamble200431/CMAEN/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/shubhamkamble200431/CMAEN/discussions)
+- **Email**: Create an issue for technical support
+
+### Community
+- ⭐ **Star** the repository if you find it useful
+- 🐛 **Report bugs** via GitHub Issues  
+- 💡 **Suggest features** via GitHub Discussions
+- 📚 **Improve documentation** via Pull Requests
+
+### Research Collaboration
+For research collaborations, commercial usage, or custom implementations, please reach out through the repository's issue system.
 
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🙏 Acknowledgments
-
-- **DDColor**: [piddnad/DDColor](https://github.com/piddnad/DDColor) for image colorization
-- **SwinIR**: [JingyunLiang/SwinIR](https://github.com/JingyunLiang/SwinIR) for image super-resolution
-- **EfficientNet**: Google's EfficientNet architecture
-- **PyTorch**: Deep learning framework
-- **FER2013**: Original emotion recognition dataset
-
-## 📞 Support
-
-For questions, issues, or contributions:
-
-1. Check the [Issues](../../issues) page
-2. Create a new issue with detailed description
-3. Join discussions in the repository
-
-## 📚 Citation
-
-If you use this work in your research, please cite:
-
-```bibtex
-@software{enhanced_emotion_recognition,
-  title={Enhanced Emotion Recognition System with Advanced Attention Mechanisms},
-  author={Your Name},
-  year={2024},
-  url={https://github.com/yourusername/emotion_recognition}
-}
-```
+### Third-party Licenses
+- DDColor: Apache License 2.0
+- SwinIR: Apache License 2.0  
+- EfficientNet: Apache License 2.0
+- PyTorch: BSD License
 
 ---
 
-**Note**: Make sure to update the DDColor and SwinIR repositories to their latest versions and follow their respective documentation for optimal performance. The repositories are kept as editable installations to allow for custom modifications and improvements.
+<div align="center">
+
+**🔥 Advancing Facial Emotion Recognition with Cross-Modal Attention 🔥**
+
+*Combining the power of specialized networks with foundation models*
+
+[![GitHub stars](https://img.shields.io/github/stars/shubhamkamble200431/CMAEN.svg?style=social&label=Star)](https://github.com/shubhamkamble200431/CMAEN)
+[![GitHub forks](https://img.shields.io/github/forks/shubhamkamble200431/CMAEN.svg?style=social&label=Fork)](https://github.com/shubhamkamble200431/CMAEN/fork)
+
+</div>
